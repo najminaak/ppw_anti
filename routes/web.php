@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth; 
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
@@ -29,12 +30,12 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/buku/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
 });
 
-// Route::get('/about', function () {
-//     return view('about', [
-//         "name" => "anti",
-//         "email" => "najminakinantiputri@mail.ugm.ac.id"
-//         ]);
-// });
+Route::get('/about', function () {
+    return view('about', [
+        "name" => "anti",
+        "email" => "najminakinantiputri@mail.ugm.ac.id"
+        ]);
+});
 
 // Route::get('/bbblade', function () {
 //     return view('bbblade');
@@ -70,3 +71,30 @@ Route::middleware(['auth'])->group(function() {
 //     Route::get('/dashboard', 'dashboard')->name('dashboard');
 //     Route::post('/logout', 'logout')->name('logout');
 // });
+
+
+// route untuk middleware check age
+Route::get('/', function () {
+    return view('welcome');
+}) -> name('welcome');
+
+Route::get('restricted', function() {
+    return redirect(route('dashboard'))->with('success', 'Anda berusia lebih dari 18 tahun!');
+})->middleware('checkage');
+
+// Rute untuk halaman home bagi pengguna biasa
+Route::get('/home', [LoginRegisterController::class, 'dashboard'])->name('home');
+
+// Rute untuk dashboard, dengan pengalihan berdasarkan peran pengguna di controller
+Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');
+
+
+
+
+// Route::middleware(['auth', 'admin'])->group(function() {
+//     Route::get('/dashboard', [BukuController::class, 'index'])->name('dashboard');
+// });
+
+
+
+// Route::post('/login', [LoginRegisterController::class, 'login'])->middleware('admin');

@@ -4,5 +4,5 @@
 
 @section('content')
     <h2>Selamat Datang di Halaman Utama</h2>
-    <p>Ini adalah konten dari halaman utama.</p>
+    <p>Anda berhasil login sebagai user.</p>
 @endsection

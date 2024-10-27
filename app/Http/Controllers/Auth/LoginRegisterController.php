@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Buku;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use Illuminate\Http\Request;
@@ -74,15 +75,27 @@ class LoginRegisterController extends Controller
     }
 
     // display a dashboard to auathenticated users
-    public function dashboard() {
+    public function dashboard()
+    {
         if (Auth::check()) {
-            return view('auth.dashboard');
+            $user = Auth::user();
+            
+            if ($user->level === 'admin') {
+                // Ambil data buku untuk dashboard admin
+                $data_buku = Buku::all();
+                $jumlah_buku = $data_buku->count();
+                $total_harga = $data_buku->sum('harga');
+
+                return view('auth.dashboard', compact('data_buku', 'jumlah_buku', 'total_harga'));
+            } else {
+                // Jika user biasa, arahkan ke halaman home
+                return view('home');
+            }
         }
-    
+
         return redirect()->route('login')
-                         ->withErrors([
-                             'email' => 'Please login to access the dashboard.',
-                         ])->onlyInput('email');
+            ->withErrors(['email' => 'Please login to access the dashboard.'])
+            ->onlyInput('email');
     }
 
     // logout the user from app
