@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\UserController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -89,12 +90,6 @@ Route::get('/home', [LoginRegisterController::class, 'dashboard'])->name('home')
 Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');
 
 
-
-
-// Route::middleware(['auth', 'admin'])->group(function() {
-//     Route::get('/dashboard', [BukuController::class, 'index'])->name('dashboard');
-// });
-
-
-
-// Route::post('/login', [LoginRegisterController::class, 'login'])->middleware('admin');
+// PERTEMUAN 10 UPLOAD FILE
+Route::resource ('users', UserController::class);
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');

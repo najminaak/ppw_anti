@@ -1,6 +1,5 @@
-@extends('bbblade')
 
-@section('title', 'Halaman Utama')
+@extends('auth.layouts')
 
 @section('content')
     <h2>Selamat Datang di Halaman Utama</h2>
