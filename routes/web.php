@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GalleryController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -93,3 +94,10 @@ Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('d
 // PERTEMUAN 10 UPLOAD FILE
 Route::resource ('users', UserController::class);
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+
+
+//PERTEMUAN 11 GALLERY
+Route::resource('gallery', GalleryController::class);
+Route::get('/gallery/edit/{id}', [GalleryController::class, 'edit'])->name('gallery.edit');
+Route::post('/gallery/update/{id}', [GalleryController::class, 'update'])->name('gallery.update');
+Route::delete('/gallery/delete/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
