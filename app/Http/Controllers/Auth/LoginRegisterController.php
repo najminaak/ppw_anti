@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\UserRegisteredEmail;
+use Illuminate\Support\Facades\Mail;
 
 class LoginRegisterController extends Controller
 {
@@ -59,6 +61,8 @@ class LoginRegisterController extends Controller
         // autentikasi pengguna
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
+
+        Mail::to($request->email)->send(new UserRegisteredEmail($request->only('email', 'name')));
 
         // redirect pengguna ke halaman dashboard
         $request->session()->regenerate();

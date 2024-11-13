@@ -7,6 +7,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\SendEmailController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -101,3 +102,7 @@ Route::resource('gallery', GalleryController::class);
 Route::get('/gallery/edit/{id}', [GalleryController::class, 'edit'])->name('gallery.edit');
 Route::post('/gallery/update/{id}', [GalleryController::class, 'update'])->name('gallery.update');
 Route::delete('/gallery/delete/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
+
+//PERTEMUAN 12 SEND EMAIL
+Route::get('/send-mail', [SendEmailController::class, 'index'])->name('kirim-email');
+Route::post('/post-email', [SendEmailController::class, 'store'])->name('post-email');

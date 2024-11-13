@@ -11,7 +11,6 @@
     <div class="container">
         @yield('content')
     </div>
-
     <script src="{{ asset('lightbox2/dist/js/lightbox-plus-jquery.min.js') }}"></script>
 </body>
 </html>

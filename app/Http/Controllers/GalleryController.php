@@ -78,17 +78,17 @@ class GalleryController extends Controller
             'picture' => 'image|nullable|max:1999'
         ]);
     
-        // Cari data berdasarkan ID
+        // cari data berdasarkan ID
         $gallery = Post::findOrFail($id);
     
-        // Proses file gambar baru jika ada
+        // proses file gambar baru jika ada
         if ($request->hasFile('picture')) {
-            // Hapus gambar lama dari storage jika bukan gambar default
+            // hapus gambar lama dari storage jika bukan gambar default
             if ($gallery->picture != 'noimage.png') {
                 Storage::delete('posts_image/' . $gallery->picture);
             }
     
-            // Simpan gambar baru
+            // simpan gambar baru
             $filenameWithExt = $request->file('picture')->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('picture')->getClientOriginalExtension();
@@ -97,15 +97,15 @@ class GalleryController extends Controller
             $filenameSimpan = "{$basename}.{$extension}";
             $path = $request->file('picture')->storeAs('posts_image', $filenameSimpan);
     
-            // Update field gambar di database
+            // update field gambar di database
             $gallery->picture = $filenameSimpan;
         }
     
-        // Update field lain
+        // update field lain
         $gallery->title = $request->input('title');
         $gallery->description = $request->input('description');
     
-        // Simpan perubahan
+        // simpan
         $gallery->save();
     
         return redirect('gallery')->with('success', 'Data berhasil diperbarui');
@@ -115,12 +115,12 @@ class GalleryController extends Controller
     {
         $gallery = Post::findOrFail($id);
 
-        // Hapus gambar dari storage jika bukan gambar default
+        // hapus gambar dari storage jika bukan gambar default
         if ($gallery->picture != 'noimage.png') {
             Storage::delete('posts_image/' . $gallery->picture);
         }
 
-        // Hapus data dari database
+        // hapus data dari database
         $gallery->delete();
 
         return redirect('gallery')->with('success', 'Gambar berhasil dihapus');
