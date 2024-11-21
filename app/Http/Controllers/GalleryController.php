@@ -8,6 +8,59 @@ use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
+    /**
+     * API Endpoint: Menampilkan data gallery dalam format JSON.
+     *
+     * @OA\Get(
+     *     path="/api/gallery",
+     *     tags={"Gallery"},
+     *     summary="Retrieve gallery data",
+     *     description="Get all gallery posts with images.",
+     *     operationId="getGallery",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of galleries retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="picture_url", type="string", format="url"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+
+    public function apiIndex()
+    {
+        $galleries = Post::where('picture', '!=', '')
+                        ->whereNotNull('picture')
+                        ->orderBy('created_at', 'desc')
+                        ->get()
+                        ->map(function ($post) {
+                            return [
+                                'id' => $post->id,
+                                'title' => $post->title,
+                                'description' => $post->description,
+                                'picture_url' => url('storage/posts_image/' . $post->picture),
+                                'created_at' => $post->created_at,
+                                'updated_at' => $post->updated_at,
+                            ];
+                        });
+
+        $response = [
+            'message' => 'Berhasil memproses galleries',
+            'success' => true,
+            'galleries' => $galleries,
+        ];
+
+        return response()->json($response, 200);
+    }
+
     public function index()
     {
         $data = array(
